@@ -1,0 +1,24 @@
+{{- $pages := (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) -}}
+{{- range .Site.Home.Translations -}}
+{{- $pages = $pages | lang.Merge (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) -}}
+{{- end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+	  <title>{{ .Site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>my RSS feed</description>
+    <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
+    <language>{{.}}</language>{{end}}{{ if not .Date.IsZero }}
+    <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{ range $pages }}
+    <item>
+      <title>{{ with .Title }}{{ . }}{{ else }}...{{ end }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Content | html }}</description>
+    </item>
+    {{ end }}
+  </channel>
+</rss>

@@ -1,0 +1,11 @@
+baseurl = "https://my.site/"
+DefaultContentLanguage = "ru"
+
+[outputs]
+    home = ["HTML", "RSS"]
+
+[languages]
+  [languages.en]
+    weight = 2
+  [languages.ru]
+    weight = 1
